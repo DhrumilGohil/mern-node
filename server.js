@@ -20,4 +20,4 @@ app.use("/api",(req,res,next) =>{
 
 //define port
 
-app.listen(5000,"0.0.0.0", () => console.log("app started at 5000..."));
+app.listen(5000,"0.0.0.0", () => console.log("Application started at 5000..."));
