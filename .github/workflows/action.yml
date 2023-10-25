@@ -1,4 +1,4 @@
-name: Copy Repository to Hosted Runner
+name: Deloy Node Application
 
 on:
   push:
@@ -13,23 +13,25 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
       
-    - name: Copy repository to runner
+    - name: Install Dependancy
       run: |
-        # Create a directory to copy the repository to
-        ls
-        pwd
         npm install
+
     - name: Check if Node.js app is running
       run: |
           pm2 list > pm2_list.txt
-          if grep -q "server" pm2_list.txt; then
+          if grep -wq "index" pm2_list.txt; then
             echo "Your Node.js app is running. Stopping it..."
-            pm2 stop server
-            pm2 delete server
+            pm2 stop index
+            pm2 delete index
             echo "Your Node.js app has been stopped."
           else
             echo "Your Node.js app is not running."
           fi
-    - name: =Node.js app is Starting
+
+    - name: Node.js app is Starting
       run: |
-        pm2 start server.js
+        pm2 start index.js
+
+    - name: Save PM2 process list
+      run: pm2 list
