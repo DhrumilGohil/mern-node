@@ -14,7 +14,7 @@ jobs:
         with:
           pattern: '\[(BUGFIX|DOCS|FEATURE|TASK)\] .+$'
           flags: 'gm'
-          error: 'Your first line has to contain a commit type like "[BUGFIX]".'
+          error: 'Your first line has to contain a commit type like "[(BUGFIX|DOCS|FEATURE|TASK)]".'
           checkAllCommitMessages: 'true'
           accessToken: ${{ secrets.TOKEN }}
   # copy-repo:
