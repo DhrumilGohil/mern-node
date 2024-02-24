@@ -3,7 +3,7 @@ name: Deloy Node Application
 on:
   push:
     branches:
-      - main # Replace with your desired branch
+      - main
 
 jobs:
   test:
