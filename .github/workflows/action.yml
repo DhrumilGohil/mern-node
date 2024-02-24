@@ -6,32 +6,42 @@ on:
       - main # Replace with your desired branch
 
 jobs:
-  copy-repo:
-    runs-on: self-hosted # You can choose a different runner if needed
-
+  test: # make sure the action works on a clean machine without building
+    runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - uses: ./
+        with:
+          pattern: '\[(BUGFIX|DOCS|FEATURE|TASK)\] .+$'
+          error: 'Your first line has to contain a commit type like "[BUGFIX]".'
+          checkAllCommitMessages: 'true'
+          accessToken: ${{ secrets.TOKEN }}
+  # copy-repo:
+  #   runs-on: self-hosted # You can choose a different runner if needed
+
+  #   steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@v2
       
-    - name: Install Dependancy
-      run: |
-        npm install
+  #   - name: Install Dependancy
+  #     run: |
+  #       npm install
 
-    - name: Check if Node.js app is running
-      run: |
-          pm2 list > pm2_list.txt
-          if grep -wq "index" pm2_list.txt; then
-            echo "Your Node.js app is running. Stopping it..."
-            pm2 stop index
-            pm2 delete index
-            echo "Your Node.js app has been stopped."
-          else
-            echo "Your Node.js app is not running."
-          fi
+  #   - name: Check if Node.js app is running
+  #     run: |
+  #         pm2 list > pm2_list.txt
+  #         if grep -wq "index" pm2_list.txt; then
+  #           echo "Your Node.js app is running. Stopping it..."
+  #           pm2 stop index
+  #           pm2 delete index
+  #           echo "Your Node.js app has been stopped."
+  #         else
+  #           echo "Your Node.js app is not running."
+  #         fi
 
-    - name: Node.js app is Starting
-      run: |
-        pm2 start index.js
+  #   - name: Node.js app is Starting
+  #     run: |
+  #       pm2 start index.js
 
     - name: Save PM2 process list
       run: pm2 list
